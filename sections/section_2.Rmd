@@ -1,0 +1,42 @@
+## Multivariate Data
+
+Before presenting and discussing different visualization options, we first explain what exactly we consider as *multivariate data*. We also introduce a specific dataset that we use as our running example throughout this tutorial. 
+
+Multivariate data, as focused in this tutorial, concerns any data that can be represented as:
+
+* **Data items** that represent real-world objects, persons, organization, etc., and
+* **Variables** that characterize these items and can be considered as properties or attributes of the items.
+
+Since all items of one dataset are described along the same variables, it is important that the items belong to the same class of objects. Otherwise, it would be hard to apply the same variables. For instance, mixing persons with countries in one dataset, it would be hard to find any attributes that apply to both classes of items alike.
+
+Aside identifiers and names, we can discern between two main data types for those variables:
+
+* **Numeric** variables, which encode some type of number (e.g., positive integers for quantities, float numbers 0.0 to 1.0 for fractions).
+* **Categorical** variables, which assign a data item to a certain category (e.g., a country item to a region category). 
+
+Hence, these two types encode quantitative and qualitative information. While numeric variables can be sorted in increasing or decreasing order, categorical variables often cannot. Please note that, sometimes, categorical variables are encoded as numbers (e.g., a numeric country code)---analyzing them as numeric variables would result in invalid results. 
+
+### Our Sample Dataset 
+
+We have selected a dataset that is easy to understand, yet of high relevance to many disciplines. It lists the **countries of the world** as data items and characterizes them along **social and economic properties in 2010** as variables. The data is based on free material from [GAPMINDER.ORG](https://www.gapminder.org), CC-BY LICENSE.
+
+Let us load our dataset with R and display it as a table. We import it from a **csv** file, a simple file format for tables that consists of of [**c**omma-**s**eparated **v**alues](https://en.wikipedia.org/wiki/Comma-separated_values), including also the table header in the first line of the file. In order to see the top 5 rows, we use the function head().
+
+<!-- todo: load the data from a relative path instead of a global fixed source -->
+
+```{r ExplainingNames, echo=TRUE}
+world <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/world_dataset.csv", header=TRUE)
+head(world)
+```
+
+The dataset contains mostly numeric variables, but also a column with an identifier (the country name) and one with a categorical variable (the region). In detail, we have included the following variables:
+
+* `country` (identifier) -- the name of the country
+* `region` (categorical) -- the geographic region the country is located
+* `population` (numeric) -- the number of inhabitants of a country
+* `income` (numeric) -- the gross domestic product  (i.e., the average economic production) per citizen in international dollars
+* `health_expenditure` (numeric) -- the average health spending per citizen in USD
+* `life_expectancy` (numeric) -- the expected number of years a newborn child would live under current conditions
+* `babies_per_woman` (numeric) -- the fertility rate, which is number of babies that would be born per woman under current conditions
+
+You can also observe some missing values (`NA` -- *not available*). It is a common problem in all real world data that, due to different reasons, there are gaps and quality issues in the data. We intentionally kept the countries with such missing data to literally draw a more realistic picture of the data. Please note, however, that the R scripts in the following often produce warnings relating to these missing values. But these are good reminders that, when interpreting the visualizations, we need to be careful as not all data items might be present.

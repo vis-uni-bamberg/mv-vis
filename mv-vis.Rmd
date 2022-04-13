@@ -1,0 +1,53 @@
+---
+title: "Introduction to Multivariate Data Visualization"
+output: 
+  learnr::tutorial:
+runtime: shiny_prerendered
+author: Fabian Beck and Shahid Latif
+description: "An introduction to data visualization that focuses on the explorative analysis of multivariate (tabular) data and uses interactive examples in R."
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(ggplot2)
+library(GGally)
+
+world <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/world_dataset.csv", header=TRUE)
+
+movies <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/movies.csv", header=TRUE)
+
+bikes <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/bikes.csv", header=TRUE)
+
+```
+
+
+```{r child = 'sections/section_1.Rmd'}
+```
+
+```{r child = 'sections/section_2.Rmd'}
+```
+
+```{r child = 'sections/section_3.Rmd'}
+```
+
+```{r child = 'sections/section_4.Rmd'}
+```
+
+```{r child = 'sections/section_5.Rmd'}
+```
+
+## About 
+
+This tutorial has been written by Fabian Beck and Shahid Latif, with technical support by Denis Artjuch. We thank [DataCampus UDE](https://www.uni-due.de/ub/datacampus/index.php), a data literacy initiative by University of Duisburg-Essen, for partly funding the project.
+
+### Contact
+
+Prof. Dr. Fabian Beck
+
+University of Bamberg
+
+An der Weberei 5, 96047 Bamberg, Germany
+
+fabian.beck(at)uni-bamberg.de
+
+

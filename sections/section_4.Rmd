@@ -1,0 +1,99 @@
+## Multivariate Analysis
+
+Multivariate analysis deals with many variables simultaneously and aims at discovering potential relationships, patterns, and unexpected observations (outliers). One of the most natural and straightforward visualization for multivariate data is a **tabular visualization**, similar as already described earlier in [Motivation]. Simply coloring the cells of a table according to the cells' values makes a tabular representation much more efficient to process and allows finding basic patterns. Still, relationships between variables might be harder to see and the ability to show many data items remains limited. In the following, we present different common visualization techniques that are useful for exploring multivariate data.
+
+### Scatterplots
+
+With the initial goal to compare the data along two variables, we can create a scatterplot. It uses **points** to represent individual values for two numerical variables **in a coordinate system with two dimensions**. The position of each point in the coordinate system indicates the values for an individual data item on the horizontal x-axis (first variable) and vertical y-axis (second variable).
+
+The following code snippet gives an example of a scatterplot showing the data points (countries) along `income` and `life_expectancy`.
+
+```{r scatterplot, exercise=TRUE}
+ggplot(world, aes(y = life_expectancy, x = income))+ 
+        geom_point()
+```
+
+A scatterplot can reveal unexpected gaps in the data or outliers. Again, Haiti (represented by the extreme bottom left point) shows as an outlier for `life_expectancy`. However, it is an outlier that follows a general trend. When we look at the plot as a whole, we observe this trend: As we move from left to right on the horizontal axis for `life_expectancy`, we see a general increase in the `income` values. We say that the variables are *positively correlated* (please note the mathematical concept of [correlation](https://en.wikipedia.org/wiki/Correlation)). Negative correlations, hence, would show as decreasing values from left to right, while other combinations might not show any clear trend at all.
+
+**TASK:** Use the above code block to observe pairwise relationships (e.g., positive, negative, or no correlation) between different pairs of variables and try to answer the following question.
+
+```{r MCCorrelation, echo=FALSE}
+question("Which of the following statements about pairwise correlations is true?",
+  answer("The variables `income` and `life_expectancy` are negatively correlated."),
+  answer("There is no clear correlation between `babies_per_woman` and `life_expectancy`."),
+  answer("In countries with low income, women are likey to have more babies.", correct = TRUE),
+  answer("The variables `income` and `population` have a positive correlation.")
+)
+```
+
+<!-- A scatterplot can also reveal different groups (often referred to as **clusters**) of data points based on how similar their values are to other data points. -->
+
+A nice property of scatterplot is that they can be visually extended to also show data from a few more variables. For instance, we can use the color of the points to encode `region` and the size of the points to visualize `population`.
+
+```{r scatterplotGrouping, exercise=TRUE}
+ggplot(world, aes(x=income, y=babies_per_woman, color=region, size=population))+
+        geom_point()
+```
+
+Now, we can see more specific patterns for different regions of the world. For instance, African women tend to have more babies while European women are likely to have 2 or fewer babies. Two Asian countries, China and India (the largest dots), manage to have rather low birth rates despite their relatively low average income values.
+
+### Scatterplot Matrices
+
+For a more systematic comparison of variables, a scatterplot matrix (or a **pairs plot**) shows **all possible combinations of scatterplots** of the selected variables in a matrix-like organization. Run the following code snippet to see a scatterplot matrix of the five numerical variables in our sample dataset.
+
+```{r scatterplotMatrix, exercise=TRUE}
+pairs(world[3:7])
+```
+
+Please note that the above code block does not use *ggplot2*, but the default R diagrams. There is an obvious difference in terms of aesthetics for this plot compared to the ones you have seen above. There is not direct *ggplot2* version of this visualization, but [**GGally**](https://ggobi.github.io/ggally/) extends *ggplot2* with advanced multivariate plots. The following code block uses *GGally* to draw a scatterplot matrix for the same variables.
+
+```{r scatterplotMatrixWithGGally, exercise=TRUE, warning=FALSE}
+library(GGally)
+ggpairs(world[3:7])
+```
+
+Scatterplots for each pair of variables are drawn on the left of the diagonal. The values of the *Pearson correlation coefficient*, a specific method how to calculate correlations, are shown on the right of the diagonal. The number of **asterisks** (\*) marks the statisical significance of correlations and can be interpreted as a measure of certainty (not strength). The diagonal shows the univariate distribution of each variable. 
+
+Now, we can much quicker check the pairwise correlations, both visually and through the correlation coefficients. For instance, we observe a strong positive correlation (usually, > 0.75) between `income` and `health_expenditure` and an almost as strong, but negative correlation between `life_expectancy` and `babies_per_woman`. The scatterplots show in both cases potentially interesting outliers. Unfortunately, the visualization is not interactive and does not allow to directly identify the respective countries, but we can use other means to do this (for instance, sorting the tabular output).
+
+### Parallel Coordinates Plots
+
+With scatterplots and scatterplot matrices, we are able to see relationships between variables and outliers as unusual combinations of values. Sometimes, also groups of similar data items appear as visual clusters. However, this is limited to two numerical variables at a time. However, specifically for detecting similar items, it is desirable to compare more than two numerical variables and see clusters or similarity within predefined groups across all these data attributes. 
+
+A parallel coordinates plot supports such comparison. Here, each variable corresponds to a vertical axis. The axes for all variables are placed in parallel and equidistant from each other. A data point is now represented as a broken line across all axes. The line intersects each axis at the respective value of the variable for the current data item. Run the following code snippet to see a parallel coordinates for our dataset where each line, hence, represents one country.
+
+```{r firstParallelPlot, exercise=TRUE}
+ggparcoord(world, columns=3:7, alphaLines = 0.2, scale = "uniminmax")
+```
+
+Once again, this implementation is based on *GGally*. We reduce the opacity of the lines (`alphaLines = 0.2`) to better see patterns in dense regions with many line crossings. For a better scaling, we use a **uni**t **min**imum and **max**imum (`scale = unitminmax`) that normalizes all axes to have a value between 0 and 1. 
+
+Now, we get an overview of all data items and all numeric variables. We can observe whether there exists a similar subset of data items regarding these attributes. For instance, we see a large group of small countries with low to medium income and health expenditure, but quite high life expectancy and middle fertility rates. Still, subtle difference are difficult to note and it remains unclear which countries belong to a specific cluster. Coloring the lines by region could maybe provide more insights.
+
+**TASK:** Color the lines by variable `region`. *Hint:* You can consult the [documentation](https://ggobi.github.io/ggally/reference/ggparcoord.html?q=parcoord#arguments) of `ggparcoord`.
+
+```{r MCParallelCoordinates, echo=FALSE}
+question("Which is the dominant region of the cluster of countries described above?",
+  answer("Africa"),
+  answer("Asia", correct = TRUE),
+  answer("Europe"),
+  answer("Oceania"),
+  incorrect = "Incorrect. In case your code did not work, please try `ggparcoord(world, columns=3:7, alphaLines = 0.4, scale = \"uniminmax\", groupColumn = \"region\")`."
+)
+```
+
+<!-- todo: add dimensionality reduction for cluster analysis -->
+
+### Discussion
+
+In contrast to visualizations like histograms and boxplots, which aggregate data, the visualization presented in this section do not aggregate data. Instead they visualize every observation individually and patterns appear in the visual distribution of points (scatterplots) and lines (parallel coordinates plots). Scatterplots only compare two variables at a time, but can be extended to scatterplot matrices for visualization of more variables. However, these matrices are still limited to pairwise comparisons. In contrast, parallel coordinates plots literally connect more variables.
+
+**Scatterplots** are particularly useful for **observing correlations between variables**. Although they do not reveal the precise extent of a correlation, they are very helpful to get a rough understanding of the correlation. This even works when the relationship is not linear (for instance, first increasing, then decreasing values as read from left to right), which common numeric correlation coefficients cannot capture. Also, deviations from the general trend can quickly be identified as outliers in these scatterplots. 
+
+**Parallel coordinates plots** show their strength in providing an **overview across more variables**. Clusters can be discovered by identifying density patterns in the patterns of lines. However, the resulting appearance of the plot depends on the sorting of the axes. While it is easier to see a group of items with similar values in three neighboring axes, it is much harder if these axes are scattered across other axes. Unfortunately, different patterns might require different orderings---there generally is no perfect ordering. 
+
+In our examples, we have not used **categorical variables** as axes, neither in scatterplots nor in parallel coordinates plots, but **for additional color-coding the points and lines**. This is doable for a single categorical variable. A second categorical variable can be encoded in the shape of the points or the stroke of the lines (different styles of dashing). However, this approach is limited to a few such variables, having only few categories each. Although just treating the categorical variables as numeric ones and mapping the categories to numbers is doable, this would result in scatterplots and parallel coordinates plots that are hard to interpret as proximity on the scale does no longer have a meaning. 
+
+<!-- todo: discuss categorical vars -->
+
+**Misinterpretation and Misuse:** Scatterplots might be misinterpreted to see causation between a pair of variables that are just correlated, or intentionally misused for this. But keep in mind that **correlation does not imply causation**. Correlation is just a statistical relationship between the variable while causation relates to a phenomenon where one variable truly influences the other as an effect. Correlation can stem from a causal relationship, but might also be just a coincidence or caused by a third unseen factor. In parallel coordinates plots, **the absence of a visual cluster pattern does not imply the general absence of clusters*---axes might just need to be reordered to reveal an existing cluster or clusters are rather subtle so that they are hard to note visually.

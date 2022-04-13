@@ -1,0 +1,39 @@
+## Start
+
+> This tutorial is an introduction to data visualization that focuses on the explorative analysis of multivariate (tabular) data and uses interactive examples in R. An open-ended exercise goes beyond and invites you to perform your own data analysis. The tutorial is target at students of all disciplines---no programming experience required.
+
+We estimate the workload as follows:
+
+* Working through this tutorial: 4 hours
+* Familiarizing with a visualization tool: 2 hours
+* Solving the open-ended exercise: 4 hours
+
+### Motivation
+
+The **goal of data visualization** is to make data readable. Whereas statistics focuses on summarizing data and testing hypothesis, visualization is more explorative. With a visualization, we can get an overview of the data, identify frequent patterns and rare outliers, inspect quality issues, and relate individual data points to the overall data. This is not meant to replace a statistic analysis, but to complement it.
+
+In this tutorial, we focus on **multivariate data**---data that can be represented as tables---because it is one of the most common data types and its visualization is relevant across nearly all scientific areas and domains. The rows of the table usually list the data items, while the columns provide different data variables recorded for each item.
+
+**Tables** in their plain version are a great tool to show small amounts of data, as well as to edit and transform the data. However, they hardly provide a good overview or reveal patterns and outliers.
+
+### Example
+
+For instance, the table below shows study results where participants answered **how appropriate a behavior is in a certain situation** (from 0 -- *low* to 9 -- *high appropriateness*). It is easy to read a specific value from the table relating to a pair of behavior and situation. An example is that *sleeping* in *church* is not considered appropriate (value: 1.77). But what is the most appropriate behavior in *church*? What is generally a favorable behavior in most situations? Are there other situations rated similarly to *church*? These questions are harder to answer with the plain table, already in rather small example like this.
+
+<img src="images/behavior-situation_table.png" alt="Table showing appropriateness values for all behavior-situation pairs" width="100%"/>
+
+* *Source:* “Behavioral Appropriateness and Situational Constraint as Dimensions of Social Behavior” Price, R.H. and Bouffard, D.L. Journal of Personality and Social Psychology, 1974, Vol. 30, No.4, 579-586; via: http://research.jagoda.ca/j/data-sketches/index.html
+
+By using colored squares as cells, we can **transform the table into a visualization**. We use orange for low values and green for high values. Additionally, we vary the sizes of the squares according to the appropriateness to make it even easier to read, also considering that some users might be red-green blind. This is a straightforward way to visualize multivariate data, but a quite powerful approach already. For instance, we can now see that *job interview* has very similar values as *church*, but *park* and *own room* are rather the opposite.
+
+<img src="images/behavior-situation_table_visual.png" alt="Visualization showing appropriateness values for all behavior-situation pairs as colored and scaled squares" width="70%"/>
+
+This is just one example to motivate that the use of visualization can be a powerful tool for data analysis. There are also other visualization methods for such tabular data, some that scale to much larger datasets. We will explain some particularly important ones in this tutorial step by step.
+
+### Structure of this Tutorial
+
+As the **main content of this tutorial**, we will introduce you to multivariate data and how to visualize such information. After clarifying the type of data ([Multivariate Data]), we will first look at visualizations that visualize the data from each variable separately ([Univariate Analysis]). Then, we also discuss visualization that show multiple variables at the same time ([Multivariate Analysis]). Along introducing the visualization techniques, we will also discuss their advantages and limitations, as well as their potential to be misinterpreted or misused.
+
+Using R, we will give practical examples how to create these visualization with a few lines of code. We include short interactive quizzes to immediately allow you to check whether you understood the discussed content and can use the visualization to get insights.
+
+The tutorial will be concluded by a more open-ended [Exercise]. Based on datasets that we provide, you will conduct a short visual data analysis. You will answer a sequence of data analysis questions according to your interest and previous findings. You can use R for this, but we will also introduce few alternative tools that do not require writing any code.

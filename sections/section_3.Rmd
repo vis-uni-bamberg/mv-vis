@@ -1,0 +1,127 @@
+## Univariate Analysis
+
+Every variable describes a relevant attribute of the data items. Hence, analyzing the data along only one variable at first (*univariate analysis*), might already provide relevant insights. For instance, we could learn how the items are distributed across a numeric scale (e.g., with a peak around a certain value or evenly across all possible values) or discover noteworthy outliers and extreme values. We will present some simple, yet powerful visualizations to explore such characteristics.
+
+### Item Bars
+
+A set of numeric values can be generally represented as **bar charts**. This type of diagram is also applicable here and provides maybe the simplest visualization of a single variable. In such a diagram, each data item is represented by a bar and the height of the bar encodes the respective numeric value.
+
+We can test this, for instance, for the variable `life_expectancy` using the following code. (Please click *Run Code* to see the diagram.)
+
+```{r ItemBars, exercise=TRUE}
+library(ggplot2)
+
+ggplot(head(world), aes(x = country, y = life_expectancy)) +
+        geom_col()
+```
+
+The code starts with importing the program library [ggplot2](https://ggplot2.tidyverse.org/), a popular visualization library for R. Then, we can generate a bar chart using the function `ggplot()` with `geom_bar()`. First, we provide the data (here, `head(world)`---only the first five rows to not overload the diagram) and specify the **aes***thetic mapping* (here, the mapping of the data to x- and y-axis). Second, we define a **geom***etric layer* as bars or **col***umns*, respectively (`geom_col`).
+
+*Please note that we assume here the data is still loaded---in this and the following code blocks, for brevity, we do not repeat code that has been executed before like loading of data or libraries.*
+
+**TASK:** You can change the above code and run it again. Please load **all** countries and analyze the data ranges.
+
+```{r MCItemBars, echo=FALSE}
+question("What range of values do you observe for `life_expectancy`?",
+  answer("The values are between 20 and 90."),
+  answer("The values are between 30 and 85.", correct = TRUE),
+  answer("The values are between 40 and 85"),
+  answer("The values are between 40 and 90."),
+  incorrect = "Incorrect. In case your code did not work, please try `ggplot(world, aes(x = country, y = life_expectancy)) + geom_col()`."
+)
+```
+
+### Histograms
+
+With the above diagram, we can hence read specific values and inspect the data range of a certain variable. While this is a good starting point, we might also want to understand whether the data distribution has a certain peak around a value, which is hard to see in the example above. To this end, histograms show how frequent certain values are. A typical example for a historgram, which most likely everybody has seen in school or at university, is a distribution of grades published after an exam.
+
+When there are discrete steps in the data---for instance, the steps of a grading scale---, each bar can represent one of these steps. However, for continuous numeric variables, it does not make sense to include a bar for every different value because, most likely, none of the values is repeated. Instead we use **bins** of values that cover a certain range, each of the same width. For generating a histogram, we can either specify the number of bins we want to have or the width of the bins. Here, we use the number of bins as this can be set independently of the scale of the variable. 
+
+For our sample dataset, we can generate a histogram for the variable `life_expectancy` as follows.
+
+```{r Histogram, exercise=TRUE}
+ggplot(world, aes(x = life_expectancy)) +
+        geom_histogram(bins = 10)
+```
+
+Again, we use `ggplot()`, but now with `geom_histogram()` to select the right type of diagram. We set the number of `bins` to 10.
+
+**TASK:** In the above code, please change the variable to `babies_per_woman` and analyze how the distribution adapts.
+
+```{r MCHistogram, echo=FALSE}
+question("What do you observe for the distribution of values regarding `babies_per_woman`?",
+  answer("The peak is on the left for small values.", correct = TRUE),
+  answer("The peak is in the middle for medium values."),
+  answer("The peak is on the right for high values."),
+  answer("There is no clear peak."),
+  incorrect = "Incorrect. In case your code did not work, please try `ggplot(world, aes(x = babies_per_woman)) + geom_histogram(bins = 10)`."
+)
+```
+
+### Boxplots
+
+Boxplots even aggregate the data more, by computing the statistical properties of the numerical data distributions and visualizing these. Important to understand is that the visualized properties are based on sorting all values that appear for the variable and then cutting them into four equally-sized parts, the **quarters**. For visualization as a boxplot, we are specifically interested in the values at the borders of the quarters, which are called **quartiles**:
+
+* **First quartile** -- the value at the border of the first and second quarter
+* **Second quartile (median)** -- the value in the middle of the sorted list at the border of the second and third quarter
+* **Third quartile** -- the value at the border of the third and fourth quarter
+
+Describing the distribution along the quartiles gives a good summary where there is a peak (mostly, around the median) and where the central 50% of the points are (between the first and third quartile). Boxplots draw a box for these values spanning from the first to the third quartile, with a thick line at the median value.
+
+Here is an example for the variable `life_expectancy`. 
+
+```{r Boxplot1, exercise=TRUE, fig.width=2}
+ggplot(world, aes(y = life_expectancy)) +
+        geom_boxplot()
+```
+
+We can easily read the three quartile values from the box. But we also see that there are a few more visual elements contained in the boxplot. Vertical lines, the **whiskers**, extend the box at the bottom/top. Each marks how far the distribution stretches in the first/fourth quarter. We actually need to discern two different cases, which we also see in the example: First, if the values in the first/fourth quartile do not stretch too far, the whisker goes down/up to the minimum/maximum value (here, this applies to the fourth quartile above the box). Second, if there are some values that should be rather considered as outliers, the whisker only stretches to the minimum/maximum of the non-outliers and outliers are visualized as separate dots (here, this applies to the first quartile below the box with a single outlier). Usually, values that are above/below the box with 1.5 times the distance between the first and third quartile (**inter-quartile range**) are considered as outliers.
+
+With this you can get a compact overview of the distribution of the data. It now allows us to visualize multiple boxplots next to each other comparing different groups of data items. For instance, we can split the above data distribution by region as follows.
+
+```{r Boxplot2, exercise=TRUE}
+ggplot(world, aes(x = region, y = life_expectancy)) +
+        geom_boxplot()
+```
+
+Now, we note that, generally, African countries suffer from lower life expectancy than all other regions, which have clearly higher values. However, there are numerous outliers regarding African countries to the bottom and top. Surprisingly, though, the overall lowest value, which we already noted as an outlier in the aggregated boxplot above, is located in the Americas.
+
+To identify the specific countries with the lowest life expectancy, let us sort the original data table. Here is an example how this works for listing the top countries by population in decreasing order:
+
+```{r SortedTable, exercise=TRUE}
+head(world[order(-world$population), ])
+```
+
+**TASK:** Sort the table by `life_expectancy` with increasing order to answer the following question.
+
+```{r MCBoxplot, echo=FALSE}
+question("Which is the country with the lowest value for `life_expectancy`?",
+  answer("Bolivia"),
+  answer("Guyana"),
+  answer("Haiti", correct = TRUE),
+  answer("Suriname"),
+  incorrect = "Incorrect. In case your code did not work, please try `head(world[order(world$life_expectancy), ])`."
+)
+```
+
+### Discussion
+
+We have seen three ways of visualizing a single numeric variable with **increasing level of aggregation**, from item bars to boxplots. First, the item bars show the data pretty much *as is* and directly map each numeric value to a single bar. When loading many data items, this can quickly become too cluttered as there is not enough space for putting all the labels and bars get very thin. Also, while one can easily see the general range of data, it is hard to really judge the distribution of data points. For this, histograms are much better. They abstract from individual items and show frequency of items regarding a specific range of values. Here, the range of values as well as peaks become obvious. Whereas histograms are already use some aggregation, boxplots go beyond and are even more space-efficient. In a single column, they show various properties of the data distribution of one variable. Multiple box plots can be placed next to each other to compare subsets of data items regarding one variable.
+
+Our discussion has focused on numerical variables here and **categorical variables** cannot be visualized just like that. For instance, for the item bars, there is no numeric value we can map the height of the bar to. Also, boxplots heavily rely on characterizing quantitative properties such as quartiles, which are not available for categorical variables. Histograms, however, can be applied to categorical data with certain restrictions: We can count for each category how many data items are assigned and visualize these frequency values. However there are no bins as categorical scales do not have ranges. Generally, the sorting of the categories is not clearly defined, but sorting by alphabetic order or item frequency often make sense. Let us give an example here for the number of countries each `region` contains, sorted by alphabetic order of regions.
+
+```{r HistogramCategorical, exercise=TRUE}
+ggplot(world, aes(x = region)) +
+        geom_bar()
+```
+
+**Misinterpretation and Misuse:** Though being simple, the above diagrams already might be misinterpreted or even intentionally misused. For instance, you can sometimes see news articles trick their readers by cutting the scale of item bars to visually exaggerate differences and make the story appear more important. Histograms can be misinterpreted when using too many bins---random variations in the data will likely cause certain differences of neighboring bars that should not be interpreted as being relevant. Similarly, too few bins can hide relevant patterns in the data. Since boxplots also aggregate the data, something similar can be observed here. For instance, if there are several distinct peaks, the boxplot would hide this within the main rectangle and appears as if there is a single peak around the shown median value. Hence, boxplot should only be applied when being sure that the data distribution has a clear single peak, which can be checked using histograms.
+
+As an example for **exaggeration of differences**, we here cut the scale for `life_expectancy` to values between 55 and 85:
+
+```{r ItemBarsCut, exercise=TRUE}
+ggplot(head(world), aes(x = country, y = life_expectancy)) +
+        geom_col() +
+        coord_cartesian(ylim = c(55, 85))
+```
+
