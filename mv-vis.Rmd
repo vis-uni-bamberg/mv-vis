@@ -20,7 +20,6 @@ bikes <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data
 
 ```
 
-
 ```{r child = 'sections/section_1.Rmd'}
 ```
 
@@ -31,9 +30,6 @@ bikes <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data
 ```
 
 ```{r child = 'sections/section_4.Rmd'}
-```
-
-```{r child = 'sections/section_5.Rmd'}
 ```
 
 ## About 

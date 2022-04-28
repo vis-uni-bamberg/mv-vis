@@ -1,12 +1,6 @@
 ## Start
 
-> This tutorial is an introduction to data visualization that focuses on the explorative analysis of multivariate (tabular) data and uses interactive examples in R. An open-ended exercise goes beyond and invites you to perform your own data analysis. The tutorial is target at students of all disciplines---no programming experience required.
-
-We estimate the workload as follows:
-
-* Working through this tutorial: 4 hours
-* Familiarizing with a visualization tool: 2 hours
-* Solving the open-ended exercise: 4 hours
+> This tutorial is an introduction to data visualization that focuses on the explorative analysis of multivariate (tabular) data and uses interactive examples in R. The tutorial is target at learners of all disciplines---no programming experience required.
 
 ### Motivation
 
@@ -28,12 +22,10 @@ By using colored squares as cells, we can **transform the table into a visualiza
 
 <img src="images/behavior-situation_table_visual.png" alt="Visualization showing appropriateness values for all behavior-situation pairs as colored and scaled squares" width="70%"/>
 
-This is just one example to motivate that the use of visualization can be a powerful tool for data analysis. There are also other visualization methods for such tabular data, some that scale to much larger datasets. We will explain some particularly important ones in this tutorial step by step.
+This is just one example to motivate that the use of visualization can be a powerful tool for data analysis. There are also other visualization methods for such tabular data, some that scale to much larger datasets. We will explain some important ones in this tutorial step by step.
 
 ### Structure of this Tutorial
 
 As the **main content of this tutorial**, we will introduce you to multivariate data and how to visualize such information. After clarifying the type of data ([Multivariate Data]), we will first look at visualizations that visualize the data from each variable separately ([Univariate Analysis]). Then, we also discuss visualization that show multiple variables at the same time ([Multivariate Analysis]). Along introducing the visualization techniques, we will also discuss their advantages and limitations, as well as their potential to be misinterpreted or misused.
 
 Using R, we will give practical examples how to create these visualization with a few lines of code. We include short interactive quizzes to immediately allow you to check whether you understood the discussed content and can use the visualization to get insights.
-
-The tutorial will be concluded by a more open-ended [Exercise]. Based on datasets that we provide, you will conduct a short visual data analysis. You will answer a sequence of data analysis questions according to your interest and previous findings. You can use R for this, but we will also introduce few alternative tools that do not require writing any code.
