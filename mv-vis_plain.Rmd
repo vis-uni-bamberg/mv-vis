@@ -1,11 +1,12 @@
 ---
 title: "Introduction to Multivariate Data Visualization"
-output: 
-  learnr::tutorial:
+output: html_document
 runtime: shiny_prerendered
 author: Fabian Beck and Shahid Latif
 description: "An introduction to data visualization that focuses on the explorative analysis of multivariate (tabular) data and uses interactive examples in R."
 ---
+
+**You are viewing the archivable, non-interactive version of the document. To run the main interactive version, please visit: https://github.com/vis-uni-bamberg/mv-vis**
 
 ```{r child = 'main.Rmd'}
 ```
