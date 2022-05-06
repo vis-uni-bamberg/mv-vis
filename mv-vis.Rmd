@@ -7,5 +7,26 @@ author: Fabian Beck and Shahid Latif
 description: "An introduction to data visualization that focuses on the explorative analysis of multivariate (tabular) data and uses interactive examples in R."
 ---
 
-```{r child = 'main.Rmd'}
+```{r setup, include=FALSE}
+library(learnr)
+library(ggplot2)
+library(GGally)
+
+world <- read.csv("https://raw.githubusercontent.com/vis-uni-bamberg/mv-vis/main/data/world_dataset.csv", header=TRUE)
+
+```
+
+```{r child = 'sections/section_1.Rmd'}
+```
+
+```{r child = 'sections/section_2.Rmd'}
+```
+
+```{r child = 'sections/section_3.Rmd'}
+```
+
+```{r child = 'sections/section_4.Rmd'}
+```
+
+```{r child = 'sections/about.Rmd'}
 ```

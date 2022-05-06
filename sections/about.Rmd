@@ -1,24 +1,3 @@
-```{r setup, include=FALSE}
-library(learnr)
-library(ggplot2)
-library(GGally)
-
-world <- read.csv("https://raw.githubusercontent.com/vis-uni-bamberg/mv-vis/main/data/world_dataset.csv", header=TRUE)
-
-```
-
-```{r child = 'sections/section_1.Rmd'}
-```
-
-```{r child = 'sections/section_2.Rmd'}
-```
-
-```{r child = 'sections/section_3.Rmd'}
-```
-
-```{r child = 'sections/section_4.Rmd'}
-```
-
 ## About 
 
 This tutorial has been written by Fabian Beck and Shahid Latif, with technical support by Denis Artjuch. We thank [DataCampus UDE](https://www.uni-due.de/ub/datacampus/index.php), a data literacy initiative by University of Duisburg-Essen, for partly funding the project.
