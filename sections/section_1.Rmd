@@ -18,7 +18,7 @@ For instance, the table below shows study results where participants answered **
 
 * *Source:* “Behavioral Appropriateness and Situational Constraint as Dimensions of Social Behavior” Price, R.H. and Bouffard, D.L. Journal of Personality and Social Psychology, 1974, Vol. 30, No.4, 579-586; via: http://research.jagoda.ca/j/data-sketches/index.html
 
-By using colored squares as cells, we can **transform the table into a visualization**. We use orange for low values and green for high values. Additionally, we vary the sizes of the squares according to the appropriateness to make it even easier to read, also considering that some users might be red-green blind. This is a straightforward way to visualize multivariate data, but a quite powerful approach already. For instance, we can now see that *job interview* has very similar values as *church*, but *park* and *own room* are rather the opposite.
+By using colored squares as cells, we can **transform the table into a visualization**. We use orange for low values and green for high values. Additionally, we vary the sizes of the squares according to the appropriateness to make it even easier to read, also considering that some users might be red-green blind. This is a straightforward way to visualize multivariate data, but a quite powerful approach already. For instance, we can now see that *job interview* has very similar values as *church*, and opposite to that are *park* and *own room*.
 
 <img src="images/behavior-situation_table_visual.png" alt="Visualization showing appropriateness values for all behavior-situation pairs as colored and scaled squares" width="70%"/>
 
