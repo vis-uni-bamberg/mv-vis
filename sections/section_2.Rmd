@@ -25,7 +25,7 @@ Let us load our dataset with R and display it as a table. We import it from a **
 <!-- todo: load the data from a relative path instead of a global fixed source -->
 
 ```{r ExplainingNames, echo=TRUE}
-world <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/world_dataset.csv", header=TRUE)
+world <- read.csv("https://raw.githubusercontent.com/vis-uni-bamberg/mv-vis/main/data/world_dataset.csv", header=TRUE)
 head(world)
 ```
 
