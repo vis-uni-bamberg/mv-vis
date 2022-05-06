@@ -13,6 +13,9 @@ An introduction to data visualization that focuses on the explorative analysis o
 
 A PDF version without any interactions is available [here](https://github.com/vis-uni-bamberg/mv-vis/blob/main/pdf_version/Introduction%20to%20Multivariate%20Data%20Visualization.pdf).
 
+## Dataset
+The dataset used throughout the tutorial is based on free material from [GAPMINDER.ORG](https://www.gapminder.org) (licensed under CC-BY LICENSE).
+
 ## About 
 
 This tutorial has been written by Fabian Beck and Shahid Latif, with technical support by Denis Artjuch. We thank [DataCampus UDE](https://www.uni-due.de/ub/datacampus/index.php), a data literacy initiative by University of Duisburg-Essen, for partly funding the project.
