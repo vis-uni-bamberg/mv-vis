@@ -7,6 +7,8 @@ An introduction to data visualization that focuses on the explorative analysis o
 3. Open `mv-vis.Rmd` in RStudio and click on **Run Document** to compile and run the interactive tutorial. On first execution, you may need to install required packages, especially `learnr`, `ggplot2`, and `GGally`.
 4. The tutorial opens in a new RStudio window. You can click **Open in Browser** on the top left to view the tutorial in the default Web browser.
 
+<kbd>![screenshot of the interactive tutorial](images/screenshot.png)</kbd>
+
 ## View a non-interactive version of the tutorial
 
 A PDF version without any interactions is available [here](https://github.com/vis-uni-bamberg/mv-vis/blob/main/pdf_version/Introduction%20to%20Multivariate%20Data%20Visualization.pdf).
