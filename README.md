@@ -9,9 +9,11 @@ An introduction to data visualization that focuses on the explorative analysis o
 
 <kbd>![screenshot of the interactive tutorial](images/screenshot.png)</kbd>
 
-## View a non-interactive version of the tutorial
+## View a non-interactive version of the tutorial or cite it
 
-A PDF version without any interactions is available [here](https://github.com/vis-uni-bamberg/mv-vis/blob/main/pdf_version/Introduction%20to%20Multivariate%20Data%20Visualization.pdf).
+A PDF version without any interactions is available via Zenodo:
+
+Fabian Beck & Shahid Latif. (2022, May 6). Introduction to Multivariate Data Visualization. Zenodo. https://doi.org/10.5281/zenodo.6523081
 
 ## Dataset
 The dataset used throughout the tutorial is based on free material from [GAPMINDER.ORG](https://www.gapminder.org) (licensed under CC-BY LICENSE).
