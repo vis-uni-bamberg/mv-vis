@@ -3,11 +3,7 @@ library(learnr)
 library(ggplot2)
 library(GGally)
 
-world <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/world_dataset.csv", header=TRUE)
-
-movies <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/movies.csv", header=TRUE)
-
-bikes <- read.csv("https://git.uni-due.de/spdeartj/data-campus/-/raw/master/data/bikes.csv", header=TRUE)
+world <- read.csv("https://raw.githubusercontent.com/vis-uni-bamberg/mv-vis/main/data/world_dataset.csv", header=TRUE)
 
 ```
 
