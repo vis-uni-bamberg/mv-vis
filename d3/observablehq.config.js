@@ -21,8 +21,11 @@ export default {
 .quiz-btn:hover { opacity: 0.85; }
 .quiz-feedback { margin-top: 0.6rem; font-weight: bold; font-size: 0.9rem; min-height: 1.2em; }
 .warning-box {
-  background: #fff3cd; border-left: 4px solid #e6a817;
+  background: #fff3cd; color: #1a1a1a; border-left: 4px solid #e6a817;
   padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 4px; font-size: 0.9rem;
+}
+@media (prefers-color-scheme: dark) {
+  .warning-box { background: #2a2000; color: #f0e6b0; }
 }
 .tip-box {
   background: var(--theme-background-alt); border-left: 4px solid #4e79a7;
