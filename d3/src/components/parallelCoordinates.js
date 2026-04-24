@@ -110,7 +110,7 @@ export function parallelCoordinates(data, {
       .attr("text-anchor", "middle")
       .style("font-size", "11px")
       .style("font-weight", "bold")
-      .attr("fill", "#333")
+      .attr("fill", "currentColor")
       .text(NUMERIC_LABELS[v] || v);
   });
 
@@ -125,6 +125,7 @@ export function parallelCoordinates(data, {
         .attr("stroke", regionColor(r)).attr("stroke-width", 2.5);
       lg.append("text")
         .attr("x", i * 110 + 20).attr("y", 10)
+        .attr("fill", "currentColor")
         .style("font-size", "10px").text(r);
     });
   }

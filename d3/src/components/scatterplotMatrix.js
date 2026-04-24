@@ -35,6 +35,10 @@ function pearsonR(xs, ys) {
  *   colorByRegion  – color dots by region (default: false)
  *   cellSize       – pixels per cell (default: 130)
  */
+function isDark() {
+  return typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+}
+
 export function scatterplotMatrix(data, {
   variables = NUMERIC_VARS,
   colorByRegion = false,
@@ -73,10 +77,13 @@ export function scatterplotMatrix(data, {
         .attr("transform", `translate(${cx},${cy})`);
 
       // Cell background
+      const dark = isDark();
       cell.append("rect")
         .attr("width", cellSize).attr("height", cellSize)
-        .attr("fill", row === col ? "#f0f4f8" : "#fafafa")
-        .attr("stroke", "#ddd").attr("stroke-width", 0.5);
+        .attr("fill", row === col
+          ? (dark ? "#1a2433" : "#f0f4f8")
+          : (dark ? "#111820" : "#fafafa"))
+        .attr("stroke", dark ? "#2a3a4a" : "#ddd").attr("stroke-width", 0.5);
 
       if (row === col) {
         // Diagonal: histogram of this variable
@@ -174,27 +181,10 @@ export function scatterplotMatrix(data, {
       .attr("text-anchor", "middle")
       .style("font-size", "10px")
       .style("font-weight", "bold")
-      .attr("fill", "#333")
+      .attr("fill", "currentColor")
       .text(NUMERIC_LABELS[variables[row]] || variables[row]);
   });
 
-  // Outer labels
-  variables.forEach((v, i) => {
-    const pos = i * cellSize + cellSize / 2;
-    // Top labels (column variable)
-    svg.append("text")
-      .attr("x", labelH + pos).attr("y", 14)
-      .attr("text-anchor", "middle")
-      .style("font-size", "9px").attr("fill", "#555")
-      .text(NUMERIC_LABELS[v] || v);
-    // Left labels (row variable)
-    svg.append("text")
-      .attr("transform", `rotate(-90)`)
-      .attr("x", -(labelH + pos)).attr("y", 12)
-      .attr("text-anchor", "middle")
-      .style("font-size", "9px").attr("fill", "#555")
-      .text(NUMERIC_LABELS[v] || v);
-  });
 
   return svg.node();
 }

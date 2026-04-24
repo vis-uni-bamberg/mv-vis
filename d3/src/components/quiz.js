@@ -51,13 +51,15 @@ export function createQuiz({
     const isCorrect = answers[idx].correct === true;
     feedback.textContent = isCorrect ? correctFeedback : incorrectFeedback;
     feedback.style.color = isCorrect ? "#2e7d32" : "#c0392b";
-    form.querySelectorAll("label").forEach((lbl, i) => {
-      if (answers[i].correct) {
-        lbl.style.fontWeight = "bold";
-        lbl.style.color = "#2e7d32";
-      }
-    });
-    btn.disabled = true;
+    if (isCorrect) {
+      form.querySelectorAll("label").forEach((lbl, i) => {
+        if (answers[i].correct) {
+          lbl.style.fontWeight = "bold";
+          lbl.style.color = "#2e7d32";
+        }
+      });
+      btn.disabled = true;
+    }
   });
 
   form.appendChild(btn);
