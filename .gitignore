@@ -6,6 +6,9 @@ mv-vis_plain.html
 rsconnect/documents/mv-vis.Rmd/shinyapps.io/vis-uni-bamberg/mv-vis.dcf
 
 # Observable Framework
-d3-tutorial/node_modules/
-d3-tutorial/dist/
-d3-tutorial/src/.observablehq/cache/
+d3/node_modules/
+d3/dist/
+d3/src/.observablehq/
+
+# Claude
+.claude/
