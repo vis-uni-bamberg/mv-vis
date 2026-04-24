@@ -18,13 +18,14 @@ export function createQuiz({
   container.appendChild(qEl);
 
   const form = document.createElement("form");
+  const groupName = "quiz-" + Math.random().toString(36).slice(2);
 
   answers.forEach((ans, i) => {
     const label = document.createElement("label");
     label.className = "quiz-option";
     const radio = document.createElement("input");
     radio.type = "radio";
-    radio.name = "quiz-" + Math.random().toString(36).slice(2);
+    radio.name = groupName;
     radio.value = String(i);
     label.appendChild(radio);
     label.appendChild(document.createTextNode(" " + ans.text));
