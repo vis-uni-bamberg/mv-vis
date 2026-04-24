@@ -150,7 +150,7 @@ We have seen three ways of visualizing a single numeric variable with **increasi
 
 Whereas histograms already use some aggregation, boxplots go beyond and are even more space-efficient. In a single column, they show various properties of the data distribution of one variable. Multiple boxplots can be placed next to each other to compare subsets of data items regarding one variable.
 
-Our discussion has focused on numerical variables here, and **categorical variables** cannot be visualized just like that. For instance, for the item bars, there is no numeric value we can map the height of the bar to. Boxplots heavily rely on characterizing quantitative properties such as quartiles, which are not available for categorical variables. Histograms, however, can be applied to categorical data with certain restrictions: we can count for each category how many data items are assigned and visualize these frequency values.
+Our discussion has focused on numerical variables here, and **categorical variables** cannot be visualized just like that. For instance, for the item bars, there is no numeric value we can map the height of the bar to. Boxplots heavily rely on characterizing quantitative properties such as quartiles, which are not available for categorical variables. Histograms, however, can be applied to categorical data with certain restrictions: we can count for each category how many data items are assigned and visualize these frequency values. Generally, the sorting of the categories is not clearly defined, but sorting by alphabetic order or item frequency often makes sense.
 
 ---
 

@@ -124,7 +124,7 @@ const pcpColor = view(Inputs.toggle({ label: "Color by region", value: false }))
 display(parallelCoordinates(world, { opacity: pcpOpacity, colorByRegion: pcpColor }))
 ```
 
-Now, we get an overview of all data items and all numeric variables. We can observe whether there exists a subset of similar data items regarding these attributes. For instance, we see a large group of countries with low to medium income and health expenditure, but quite high life expectancy and middle fertility rates. Enable **Color by region** to identify which region dominates that cluster.
+Now, we get an overview of all data items and all numeric variables. We can observe whether there exists a subset of similar data items regarding these attributes. For instance, we see a large group of small countries with low to medium income and health expenditure, but quite high life expectancy and middle fertility rates. Enable **Color by region** to identify which region dominates that cluster.
 
 **Task:** Enable "Color by region" and identify the dominant region in the cluster of countries with low-to-medium income and health expenditure but high life expectancy.
 
@@ -145,13 +145,13 @@ display(createQuiz({
 
 ## Discussion
 
-In contrast to visualizations like histograms and boxplots (which aggregate data), the visualizations in this section do not aggregate data. Instead, they visualize every observation individually and patterns appear in the visual distribution of points (scatterplots) and lines (parallel coordinates plots).
+In contrast to visualizations like histograms and boxplots (which aggregate data), the visualizations in this section do not aggregate data. Instead, they visualize every observation individually and patterns appear in the visual distribution of points (scatterplots) and lines (parallel coordinates plots). Scatterplots only compare two variables at a time, but can be extended to scatterplot matrices for visualization of more variables. However, these matrices are still limited to pairwise comparisons. In contrast, parallel coordinates plots literally connect more variables.
 
 **Scatterplots** are particularly useful for **observing correlations between variables**. Although they do not reveal the precise extent of a correlation, they are very helpful for getting a rough understanding. This even works when the relationship is not linear (for instance, first increasing, then decreasing values), which common numeric correlation coefficients cannot capture. Also, deviations from the general trend can quickly be identified as outliers.
 
 **Parallel coordinates plots** show their strength in providing an **overview across more variables**. Clusters can be discovered by identifying density patterns in line bundles. However, the resulting appearance of the plot depends on the ordering of the axes. While it is easier to see a group of items with similar values in three neighboring axes, it is much harder if these axes are scattered. Unfortunately, different patterns might require different orderings — there generally is no perfect ordering.
 
-In our examples, we have used **categorical variables** for additional color-coding of the points and lines. This is doable for a single categorical variable. A second categorical variable could be encoded in the shape of the points or the stroke of the lines (different dashing styles). However, this approach is limited to a few such variables, having only a few categories each.
+In our examples, we have used **categorical variables** for additional color-coding of the points and lines. This is doable for a single categorical variable. A second categorical variable could be encoded in the shape of the points or the stroke of the lines (different dashing styles). However, this approach is limited to a few such variables, having only a few categories each. Although just treating categorical variables as numeric ones and mapping the categories to numbers is doable, this would result in scatterplots and parallel coordinates plots that are hard to interpret, as proximity on the scale no longer has a meaning.
 
 ---
 
