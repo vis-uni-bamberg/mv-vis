@@ -4,3 +4,11 @@ mv-vis.html
 mv-vis_plain.html
 .Rproj.user
 rsconnect/documents/mv-vis.Rmd/shinyapps.io/vis-uni-bamberg/mv-vis.dcf
+
+# Observable Framework
+d3/node_modules/
+d3/dist/
+d3/src/.observablehq/
+
+# Claude
+.claude/

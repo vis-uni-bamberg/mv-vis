@@ -1,0 +1,41 @@
+export default {
+  title: "Introduction to Multivariate Data Visualization",
+  root: "src",
+  output: "dist",
+  head: `<style>
+.quiz-container {
+  background: var(--theme-background-alt);
+  border-left: 4px solid var(--theme-foreground-focus);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+}
+.quiz-question { font-size: 1rem; margin-bottom: 0.75rem; }
+.quiz-option { display: block; margin: 0.35rem 0; cursor: pointer; font-size: 0.95rem; }
+.quiz-option input { margin-right: 0.5rem; }
+.quiz-btn {
+  margin-top: 0.75rem; padding: 0.4rem 1rem;
+  background: var(--theme-foreground-focus); color: var(--theme-background);
+  border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;
+}
+.quiz-btn:hover { opacity: 0.85; }
+.quiz-feedback { margin-top: 0.6rem; font-weight: bold; font-size: 0.9rem; min-height: 1.2em; }
+.warning-box {
+  background: #fff3cd; border-left: 4px solid #e6a817;
+  padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 4px; font-size: 0.9rem;
+}
+.tip-box {
+  background: var(--theme-background-alt); border-left: 4px solid #4e79a7;
+  padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 4px; font-size: 0.9rem;
+}
+svg { max-width: 100%; height: auto; overflow: visible; }
+.chart-x-label, .chart-y-label { font-size: 12px; fill: var(--theme-foreground-muted, #666); }
+</style>`,
+  pages: [
+    { name: "Start",                 path: "/start" },
+    { name: "Multivariate Data",     path: "/multivariate-data" },
+    { name: "Univariate Analysis",   path: "/univariate-analysis" },
+    { name: "Multivariate Analysis", path: "/multivariate-analysis" },
+    { name: "About",                 path: "/about" },
+  ],
+};

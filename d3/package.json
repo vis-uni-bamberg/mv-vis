@@ -1,0 +1,14 @@
+{
+  "name": "mv-vis-d3-tutorial",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "observable preview",
+    "build": "observable build"
+  },
+  "dependencies": {
+    "@observablehq/framework": "^1.13.0",
+    "d3": "^7.9.0"
+  }
+}
