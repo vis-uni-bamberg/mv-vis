@@ -9,6 +9,17 @@ An introduction to data visualization that focuses on the explorative analysis o
 
 <kbd>![screenshot of the interactive tutorial](images/screenshot.png)</kbd>
 
+## D3.js version (browser-based, no installation required)
+
+A D3.js version of the tutorial is available online at **https://vis-uni-bamberg.github.io/mv-vis/**. It covers the same content as the R tutorial with fully interactive visualizations that run directly in the browser — no programming experience or local setup required.
+
+This version is built with [Observable Framework](https://observablehq.com/framework/) and [D3.js v7](https://d3js.org/). The source is in the [`d3/`](d3/) directory of this repository.
+
+To run or build the D3 version locally:
+1. Install [Node.js](https://nodejs.org/).
+2. In the `d3/` directory, run `npm install`.
+3. Run `npm run dev` to start a local preview server, or `npm run build` to generate a static build in `d3/dist/`.
+
 ## View a non-interactive version of the tutorial or cite it
 
 A PDF version without any interactions is available via Zenodo:
