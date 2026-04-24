@@ -32,7 +32,7 @@ export function parallelCoordinates(data, {
   width = 900,
   height = 440,
 } = {}) {
-  const margin = { top: 48, right: 40, bottom: 24, left: 40 };
+  const margin = { top: 48, right: 40, bottom: colorByRegion ? 36 : 24, left: 40 };
   const iw = width - margin.left - margin.right;
   const ih = height - margin.top - margin.bottom;
 
@@ -75,7 +75,7 @@ export function parallelCoordinates(data, {
     .attr("stroke-width", 1.2)
     .attr("stroke-opacity", opacity)
     .on("mouseover", function(event, d) {
-      d3.select(this).raise()
+      d3.select(this)
         .attr("stroke-opacity", 1)
         .attr("stroke-width", 2.5);
       tooltip.style.display = "block";
@@ -114,17 +114,20 @@ export function parallelCoordinates(data, {
       .text(NUMERIC_LABELS[v] || v);
   });
 
-  // Region legend
+  // Region legend — centered below the chart
   if (colorByRegion) {
+    const itemW = 110;
+    const legendW = REGIONS.length * itemW;
+    const lx = (width - legendW) / 2;
     const lg = svg.append("g")
-      .attr("transform", `translate(${margin.left + iw - 90}, ${margin.top + ih + 4})`);
+      .attr("transform", `translate(${lx}, ${margin.top + ih + 8})`);
     REGIONS.forEach((r, i) => {
       lg.append("line")
-        .attr("x1", i * 110).attr("x2", i * 110 + 16)
+        .attr("x1", i * itemW).attr("x2", i * itemW + 16)
         .attr("y1", 6).attr("y2", 6)
         .attr("stroke", regionColor(r)).attr("stroke-width", 2.5);
       lg.append("text")
-        .attr("x", i * 110 + 20).attr("y", 10)
+        .attr("x", i * itemW + 20).attr("y", 10)
         .attr("fill", "currentColor")
         .style("font-size", "10px").text(r);
     });

@@ -64,7 +64,7 @@ export function scatterplot(data, {
   // Grid lines
   g.append("g").attr("class", "grid")
     .call(d3.axisLeft(yScale).ticks(5).tickSize(-iw).tickFormat(""))
-    .selectAll("line").attr("stroke", "#eee");
+    .selectAll("line").attr("stroke", "currentColor").attr("stroke-opacity", "0.1");
   g.select(".grid .domain").remove();
 
   g.append("g").attr("transform", `translate(0,${ih})`)
@@ -119,7 +119,7 @@ export function scatterplot(data, {
       lg.append("circle").attr("cx", 6).attr("cy", i * 20 + 6).attr("r", 6)
         .attr("fill", regionColor(r)).attr("opacity", 0.8);
       lg.append("text").attr("x", 16).attr("y", i * 20 + 10)
-        .style("font-size", "11px").text(r);
+        .attr("fill", "currentColor").style("font-size", "11px").text(r);
     });
   }
 
