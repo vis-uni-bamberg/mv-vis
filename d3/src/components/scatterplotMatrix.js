@@ -1,6 +1,6 @@
 import * as d3 from "npm:d3";
 import { NUMERIC_VARS, NUMERIC_LABELS, validFor, validForAll } from "./dataLoader.js";
-import { regionColor } from "./colors.js";
+import { regionColor, REGIONS } from "./colors.js";
 
 function getTooltip() {
   let tip = document.getElementById("mv-tooltip");
@@ -35,20 +35,17 @@ function pearsonR(xs, ys) {
  *   colorByRegion  – color dots by region (default: false)
  *   cellSize       – pixels per cell (default: 130)
  */
-function isDark() {
-  return typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches;
-}
-
 export function scatterplotMatrix(data, {
   variables = NUMERIC_VARS,
   colorByRegion = false,
-  cellSize = 130,
+  cellSize = 170,
 } = {}) {
   const n = variables.length;
   const pad = 2;
-  const labelH = 30;
+  const labelH = 60;
+  const legendW = colorByRegion ? 130 : 0;
   const totalSize = n * cellSize;
-  const width = totalSize + labelH * 2;
+  const width = totalSize + labelH * 2 + legendW;
   const height = totalSize + labelH * 2;
 
   // Pre-compute per-variable extents and scales
@@ -68,6 +65,28 @@ export function scatterplotMatrix(data, {
   const root = svg.append("g").attr("transform", `translate(${labelH},${labelH})`);
   const tooltip = getTooltip();
 
+  // Create outer axis labels first so cell hover can reference them
+  const topLabels = [];
+  const leftLabels = [];
+  variables.forEach((v, i) => {
+    const pos = i * cellSize + cellSize / 2;
+    topLabels.push(
+      svg.append("text")
+        .attr("x", labelH + pos).attr("y", labelH - 8)
+        .attr("text-anchor", "middle")
+        .style("font-size", "11px").attr("fill", "currentColor")
+        .text(NUMERIC_LABELS[v] || v)
+    );
+    leftLabels.push(
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -(labelH + pos)).attr("y", 14)
+        .attr("text-anchor", "middle")
+        .style("font-size", "11px").attr("fill", "currentColor")
+        .text(NUMERIC_LABELS[v] || v)
+    );
+  });
+
   variables.forEach((rowVar, row) => {
     variables.forEach((colVar, col) => {
       const cx = col * cellSize;
@@ -76,34 +95,59 @@ export function scatterplotMatrix(data, {
         .attr("class", `cell r${row}c${col}`)
         .attr("transform", `translate(${cx},${cy})`);
 
-      // Cell background
-      const dark = isDark();
+      // Cell background — fill via CSS class so it reacts to live theme changes
       cell.append("rect")
+        .attr("class", row === col ? "splom-cell-diag" : "splom-cell-off")
         .attr("width", cellSize).attr("height", cellSize)
-        .attr("fill", row === col
-          ? (dark ? "#1a2433" : "#f0f4f8")
-          : (dark ? "#111820" : "#fafafa"))
-        .attr("stroke", dark ? "#2a3a4a" : "#ddd").attr("stroke-width", 0.5);
+        .attr("stroke", "currentColor").attr("stroke-opacity", 0.15).attr("stroke-width", 0.5);
+
+      // Hover: subtly bold the relevant column (top) and row (left) axis labels
+      cell.on("mouseover", () => {
+        topLabels[col].style("font-weight", "bold");
+        leftLabels[row].style("font-weight", "bold");
+      }).on("mouseout", () => {
+        topLabels[col].style("font-weight", null);
+        leftLabels[row].style("font-weight", null);
+      });
 
       if (row === col) {
         // Diagonal: histogram of this variable
         const valid = validFor(data, rowVar);
-        const vals = valid.map((d) => d[rowVar]);
         const xSc = d3.scaleLinear().domain(extents[rowVar]).nice().range([pad, cellSize - pad]);
         const binner = d3.bin().value((d) => d[rowVar]).domain(xSc.domain()).thresholds(10);
-        const bins = binner(valid);
-        const yMax = d3.max(bins, (b) => b.length);
+        const allBins = binner(valid);
+        const yMax = d3.max(allBins, (b) => b.length);
         const ySc = d3.scaleLinear().domain([0, yMax]).range([cellSize - pad, pad]);
 
-        cell.selectAll("rect.diag-bin")
-          .data(bins)
-          .join("rect")
-          .attr("class", "diag-bin")
-          .attr("x", (b) => xSc(b.x0))
-          .attr("y", (b) => ySc(b.length))
-          .attr("width", (b) => Math.max(0, xSc(b.x1) - xSc(b.x0) - 0.5))
-          .attr("height", (b) => (cellSize - pad) - ySc(b.length))
-          .attr("fill", "#4e79a7").attr("opacity", 0.7);
+        if (colorByRegion) {
+          // Stacked: accumulate bin counts per region so bars sit on top of each other
+          const cumulative = new Array(allBins.length).fill(0);
+          REGIONS.forEach((region) => {
+            const regionBins = binner(valid.filter((d) => d.region === region));
+            regionBins.forEach((b, i) => {
+              if (b.length === 0) return;
+              const bottom = cumulative[i];
+              const top = bottom + b.length;
+              cell.append("rect")
+                .attr("x", xSc(b.x0))
+                .attr("y", ySc(top))
+                .attr("width", Math.max(0, xSc(b.x1) - xSc(b.x0) - 0.5))
+                .attr("height", ySc(bottom) - ySc(top))
+                .attr("fill", regionColor(region)).attr("opacity", 0.85);
+              cumulative[i] = top;
+            });
+          });
+        } else {
+          cell.selectAll("rect.diag-bin")
+            .data(allBins)
+            .join("rect")
+            .attr("class", "diag-bin")
+            .attr("x", (b) => xSc(b.x0))
+            .attr("y", (b) => ySc(b.length))
+            .attr("width", (b) => Math.max(0, xSc(b.x1) - xSc(b.x0) - 0.5))
+            .attr("height", (b) => (cellSize - pad) - ySc(b.length))
+            .attr("fill", "#4e79a7").attr("opacity", 0.7);
+        }
 
       } else if (row > col) {
         // Below diagonal: scatterplot
@@ -146,7 +190,7 @@ export function scatterplotMatrix(data, {
           .attr("x", cellSize / 2).attr("y", cellSize / 2 + 5)
           .attr("text-anchor", "middle")
           .attr("dominant-baseline", "middle")
-          .style("font-size", `${10 + absR * 8}px`)
+          .style("font-size", `${13 + absR * 9}px`)
           .style("font-weight", absR > 0.6 ? "bold" : "normal")
           .attr("fill", rColor)
           .text(isNaN(r) ? "—" : d3.format(".2f")(r));
@@ -159,7 +203,7 @@ export function scatterplotMatrix(data, {
         cell.append("g")
           .attr("transform", `translate(0,${cellSize})`)
           .call(d3.axisBottom(xSc).ticks(3).tickSize(3).tickFormat(d3.format(".2s")))
-          .selectAll("text").style("font-size", "8px");
+          .selectAll("text").style("font-size", "11px");
         cell.select(".domain").remove();
       }
       if (col === 0) {
@@ -169,22 +213,25 @@ export function scatterplotMatrix(data, {
           .range([cellSize - pad, pad]);
         cell.append("g")
           .call(d3.axisLeft(ySc).ticks(3).tickSize(3).tickFormat(d3.format(".2s")))
-          .selectAll("text").style("font-size", "8px");
+          .selectAll("text").style("font-size", "11px");
         cell.select(".domain").remove();
       }
     });
 
-    // Variable labels on diagonal
-    const diagCell = root.select(`.r${row}c${row}`);
-    diagCell.append("text")
-      .attr("x", cellSize / 2).attr("y", 14)
-      .attr("text-anchor", "middle")
-      .style("font-size", "10px")
-      .style("font-weight", "bold")
-      .attr("fill", "currentColor")
-      .text(NUMERIC_LABELS[variables[row]] || variables[row]);
   });
 
+
+  // Region legend
+  if (colorByRegion) {
+    const lx = totalSize + labelH * 2 + 8;
+    const lg = svg.append("g").attr("transform", `translate(${lx},${labelH})`);
+    REGIONS.forEach((r, i) => {
+      lg.append("circle").attr("cx", 6).attr("cy", i * 20 + 6).attr("r", 5)
+        .attr("fill", regionColor(r)).attr("opacity", 0.8);
+      lg.append("text").attr("x", 16).attr("y", i * 20 + 10)
+        .attr("fill", "currentColor").style("font-size", "11px").text(r);
+    });
+  }
 
   return svg.node();
 }

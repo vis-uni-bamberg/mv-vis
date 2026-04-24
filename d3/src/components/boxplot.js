@@ -46,7 +46,8 @@ export function boxplot(data, {
   width = 640,
   height = 420,
 } = {}) {
-  const margin = { top: 24, right: 30, bottom: 60, left: 70 };
+  const legendW = groupByRegion ? 110 : 0;
+  const margin = { top: 24, right: 30 + legendW, bottom: 60, left: 70 };
   const iw = width - margin.left - margin.right;
   const ih = height - margin.top - margin.bottom;
 
@@ -112,14 +113,14 @@ export function boxplot(data, {
       .attr("x1", cx).attr("x2", cx)
       .attr("y1", yScale(stats.whiskerLow))
       .attr("y2", yScale(stats.whiskerHigh))
-      .attr("stroke", "#444").attr("stroke-width", 1.5);
+      .attr("stroke", "currentColor").attr("stroke-width", 1.5);
 
     // Whisker caps
     [[stats.whiskerLow], [stats.whiskerHigh]].forEach(([w]) => {
       gc.append("line")
         .attr("x1", cx - bw * 0.25).attr("x2", cx + bw * 0.25)
         .attr("y1", yScale(w)).attr("y2", yScale(w))
-        .attr("stroke", "#444").attr("stroke-width", 1.5);
+        .attr("stroke", "currentColor").attr("stroke-width", 1.5);
     });
 
     // Box
@@ -130,7 +131,7 @@ export function boxplot(data, {
       .attr("height", yScale(stats.q1) - yScale(stats.q3))
       .attr("fill", fill)
       .attr("opacity", 0.75)
-      .attr("stroke", "#333")
+      .attr("stroke", "currentColor")
       .attr("stroke-width", 1);
 
     // Median line
@@ -148,7 +149,7 @@ export function boxplot(data, {
       .attr("cy", (d) => yScale(d._val))
       .attr("r", 3.5)
       .attr("fill", fill)
-      .attr("stroke", "#333")
+      .attr("stroke", "currentColor")
       .attr("stroke-width", 0.7)
       .attr("opacity", 0.8)
       .on("mouseover", (event, d) => {
@@ -170,7 +171,7 @@ export function boxplot(data, {
       legend.append("rect").attr("x", 0).attr("y", i * 18).attr("width", 12).attr("height", 12)
         .attr("fill", regionColor(key)).attr("opacity", 0.75);
       legend.append("text").attr("x", 16).attr("y", i * 18 + 10)
-        .style("font-size", "11px").text(key);
+        .attr("fill", "currentColor").style("font-size", "11px").text(key);
     });
   }
 

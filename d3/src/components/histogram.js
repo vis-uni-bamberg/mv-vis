@@ -28,16 +28,17 @@ function getTooltip() {
 export function histogram(data, {
   variable = "life_expectancy",
   bins = 10,
+  colorByRegion = false,
   width = 640,
   height = 400,
 } = {}) {
   return variable === "region"
     ? categoricalBar(data, { width, height })
-    : numericHistogram(data, { variable, bins, width, height });
+    : numericHistogram(data, { variable, bins, colorByRegion, width, height });
 }
 
-function numericHistogram(data, { variable, bins, width, height }) {
-  const margin = { top: 24, right: 20, bottom: 60, left: 60 };
+function numericHistogram(data, { variable, bins, colorByRegion, width, height }) {
+  const margin = { top: 24, right: colorByRegion ? 130 : 20, bottom: 60, left: 60 };
   const iw = width - margin.left - margin.right;
   const ih = height - margin.top - margin.bottom;
 
@@ -46,8 +47,10 @@ function numericHistogram(data, { variable, bins, width, height }) {
 
   const xScale = d3.scaleLinear().domain(d3.extent(values)).nice().range([0, iw]);
   const binner = d3.bin().value((d) => d[variable]).domain(xScale.domain()).thresholds(bins);
-  const binsData = binner(filtered);
-  const yScale = d3.scaleLinear().domain([0, d3.max(binsData, (b) => b.length)]).nice().range([ih, 0]);
+
+  // Y scale based on full dataset so all regions share the same axis
+  const allBins = binner(filtered);
+  const yScale = d3.scaleLinear().domain([0, d3.max(allBins, (b) => b.length)]).nice().range([ih, 0]);
 
   const svg = d3.create("svg")
     .attr("width", width).attr("height", height)
@@ -59,7 +62,6 @@ function numericHistogram(data, { variable, bins, width, height }) {
   g.append("g").attr("transform", `translate(0,${ih})`).call(d3.axisBottom(xScale).ticks(6));
   g.append("g").call(d3.axisLeft(yScale).ticks(6));
 
-  // Axis labels
   g.append("text").attr("class", "chart-x-label")
     .attr("x", iw / 2).attr("y", ih + 44)
     .attr("text-anchor", "middle")
@@ -73,25 +75,64 @@ function numericHistogram(data, { variable, bins, width, height }) {
 
   const tooltip = getTooltip();
 
-  g.selectAll("rect.bin")
-    .data(binsData)
-    .join("rect")
-    .attr("class", "bin")
-    .attr("x", (b) => xScale(b.x0) + 1)
-    .attr("y", (b) => yScale(b.length))
-    .attr("width", (b) => Math.max(0, xScale(b.x1) - xScale(b.x0) - 1))
-    .attr("height", (b) => ih - yScale(b.length))
-    .attr("fill", "#4e79a7")
-    .attr("opacity", 0.85)
-    .on("mouseover", (event, b) => {
-      tooltip.style.display = "block";
-      tooltip.innerHTML = `Range: ${d3.format(",.1f")(b.x0)} – ${d3.format(",.1f")(b.x1)}<br>Count: ${b.length}`;
-    })
-    .on("mousemove", (event) => {
-      tooltip.style.left = `${event.clientX + 14}px`;
-      tooltip.style.top = `${event.clientY - 36}px`;
-    })
-    .on("mouseout", () => { tooltip.style.display = "none"; });
+  if (colorByRegion) {
+    const cumulative = new Array(allBins.length).fill(0);
+    REGIONS.forEach((region) => {
+      const regionBins = binner(filtered.filter((d) => d.region === region));
+      regionBins.forEach((b, i) => {
+        if (b.length === 0) return;
+        const bottom = cumulative[i];
+        const top = bottom + b.length;
+        g.append("rect")
+          .attr("x", xScale(b.x0) + 1)
+          .attr("y", yScale(top))
+          .attr("width", Math.max(0, xScale(b.x1) - xScale(b.x0) - 1))
+          .attr("height", yScale(bottom) - yScale(top))
+          .attr("fill", regionColor(region))
+          .attr("opacity", 0.85)
+          .on("mouseover", (event) => {
+            tooltip.style.display = "block";
+            tooltip.innerHTML = `<strong>${region}</strong><br>Range: ${d3.format(",.1f")(b.x0)} – ${d3.format(",.1f")(b.x1)}<br>Count: ${b.length}`;
+          })
+          .on("mousemove", (event) => {
+            tooltip.style.left = `${event.clientX + 14}px`;
+            tooltip.style.top = `${event.clientY - 36}px`;
+          })
+          .on("mouseout", () => { tooltip.style.display = "none"; });
+        cumulative[i] = top;
+      });
+    });
+
+    // Legend
+    const lx = margin.left + iw + 10;
+    const lg = svg.append("g").attr("transform", `translate(${lx},${margin.top})`);
+    REGIONS.forEach((r, i) => {
+      lg.append("rect").attr("x", 0).attr("y", i * 20).attr("width", 12).attr("height", 12)
+        .attr("fill", regionColor(r)).attr("opacity", 0.7);
+      lg.append("text").attr("x", 16).attr("y", i * 20 + 10)
+        .attr("fill", "currentColor").style("font-size", "11px").text(r);
+    });
+  } else {
+    g.selectAll("rect.bin")
+      .data(allBins)
+      .join("rect")
+      .attr("class", "bin")
+      .attr("x", (b) => xScale(b.x0) + 1)
+      .attr("y", (b) => yScale(b.length))
+      .attr("width", (b) => Math.max(0, xScale(b.x1) - xScale(b.x0) - 1))
+      .attr("height", (b) => ih - yScale(b.length))
+      .attr("fill", "#4e79a7")
+      .attr("opacity", 0.85)
+      .on("mouseover", (event, b) => {
+        tooltip.style.display = "block";
+        tooltip.innerHTML = `Range: ${d3.format(",.1f")(b.x0)} – ${d3.format(",.1f")(b.x1)}<br>Count: ${b.length}`;
+      })
+      .on("mousemove", (event) => {
+        tooltip.style.left = `${event.clientX + 14}px`;
+        tooltip.style.top = `${event.clientY - 36}px`;
+      })
+      .on("mouseout", () => { tooltip.style.display = "none"; });
+  }
 
   return svg.node();
 }

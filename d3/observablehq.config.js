@@ -32,7 +32,13 @@ export default {
   padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 4px; font-size: 0.9rem;
 }
 svg { max-width: 100%; height: auto; overflow: visible; }
-.chart-x-label, .chart-y-label { font-size: 12px; fill: var(--theme-foreground-muted, #666); }
+.splom-cell-diag { fill: #f0f4f8; }
+.splom-cell-off  { fill: #fafafa; }
+@media (prefers-color-scheme: dark) {
+  .splom-cell-diag { fill: #1a2433; }
+  .splom-cell-off  { fill: #111820; }
+}
+.chart-x-label, .chart-y-label { font-size: 12px; fill: currentColor; opacity: 0.75; }
 </style>`,
   pages: [
     { name: "Start",                 path: "/start" },

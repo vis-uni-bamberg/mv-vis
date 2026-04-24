@@ -52,10 +52,20 @@ svg {
   overflow: visible;
 }
 
+/* SPLOM cell backgrounds — CSS-driven so they react to live theme changes */
+.splom-cell-diag { fill: #f0f4f8; }
+.splom-cell-off  { fill: #fafafa; }
+
+@media (prefers-color-scheme: dark) {
+  .splom-cell-diag { fill: #1a2433; }
+  .splom-cell-off  { fill: #111820; }
+}
+
 .chart-x-label,
 .chart-y-label {
   font-size: 12px;
-  fill: var(--theme-foreground-muted, #666);
+  fill: currentColor;
+  opacity: 0.75;
 }
 
 .axis text {
